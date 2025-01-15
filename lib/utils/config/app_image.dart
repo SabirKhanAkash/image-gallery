@@ -1,5 +1,11 @@
 class AppImage {
   final permissionIcon = "assets/icons/ic_permission_screen_icon.svg";
+  final grayTransparentCover = "assets/icons/ic_gray_transparent_cover.svg";
+  final allAlbumThumbnail = "assets/icons/ic_all_album_thumbnail.png";
+  final recentAlbumThumbnail = "assets/icons/ic_recent_album_thumbnail.png";
+  final gameAlbumThumbnail = "assets/icons/ic_game_album_thumbnail.png";
+  final buildingAlbumThumbnail = "assets/icons/ic_building_album_thumbnail.png";
+  final peopleAlbumThumbnail = "assets/icons/ic_people_album_thumbnail.png";
   final facebookIcon = "assets/icons/ic_facebook.svg";
   final backIcon = "assets/icons/ic_back.svg";
   final searchIcon = "assets/icons/ic_search.svg";

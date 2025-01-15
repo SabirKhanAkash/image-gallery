@@ -1,4 +1,15 @@
 class AppText {
+  final albumHeading = "Albums";
+  final allAlbumHeading = "All";
+  final recentAlbumHeading = "Recent";
+  final gameAlbumHeading = "Game";
+  final buildingAlbumHeading = "Building";
+  final peopleAlbumHeading = "People";
+  final allAlbumSubHeading = "27 Photos";
+  final recentAlbumSubHeading = "12 Photos";
+  final gameAlbumSubHeading = "122 Photos";
+  final buildingAlbumSubHeading = "22 Photos";
+  final peopleAlbumSubHeading = "24 Photos";
   final permissionButton = "Grant Access";
   final permissionHeading = "Require Permission";
   final permissionNote = "To show your black and white photos we just need your folder permission"

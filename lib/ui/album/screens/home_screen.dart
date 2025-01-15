@@ -20,9 +20,9 @@ class _HomeScreenState extends State<HomeScreen> {
         builder: (context, state) {
           return state is GalleryPermissionStatus
               ? state.galleryPermissionGranted
-                  ? buildAlbumBody()
-                  : buildPermissionBody()
-              : buildPermissionBody();
+                  ? buildPermissionBody()
+                  : buildAlbumBody()
+              : buildAlbumBody();
         },
         listener: (context, state) => {},
       ),

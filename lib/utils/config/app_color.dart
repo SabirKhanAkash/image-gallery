@@ -2,6 +2,8 @@ import 'dart:ui';
 
 class AppColor {
   final solidBlack = const Color(0xff000000);
+  final grayBlack = const Color(0xff363636);
+  final veryGrayBlack = const Color(0xffD8D8D8);
   final black = const Color(0xff212020);
   final lightGreen = const Color(0xff66FFB6);
   final green = const Color(0xff239800);
