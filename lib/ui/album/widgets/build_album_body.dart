@@ -4,8 +4,10 @@ import 'package:image_gallery/utils/config/app_color.dart';
 import 'package:image_gallery/utils/config/app_image.dart';
 import 'package:image_gallery/utils/config/app_style.dart';
 import 'package:image_gallery/utils/config/app_text.dart';
+import 'package:image_gallery/viewmodels/app/app_cubit.dart';
+import 'package:image_gallery/viewmodels/app/app_state.dart';
 
-Widget buildAlbumBody() {
+Widget buildAlbumBody(AppCubit cubit, BuildContext context, GalleryPermissionStatus state) {
   return SafeArea(
     child: Column(
       children: [

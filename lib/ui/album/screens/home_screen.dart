@@ -18,13 +18,20 @@ class _HomeScreenState extends State<HomeScreen> {
     return Scaffold(
       body: BlocConsumer<AppCubit, AppState>(
         builder: (context, state) {
+          final cubit = context.read<AppCubit>();
           return state is GalleryPermissionStatus
               ? state.galleryPermissionGranted
-                  ? buildAlbumBody()
-                  : buildPermissionBody()
-              : buildPermissionBody();
+                  ? buildAlbumBody(cubit, context, state)
+                  : buildPermissionBody(cubit, context, state)
+              : buildPermissionBody(cubit, context, state);
         },
-        listener: (context, state) => {},
+        listener: (context, state) => {
+          state is GalleryPermissionStatus
+              ? state.galleryPermissionGranted
+                  ? print("Permission Granted")
+                  : print("Permission not Granted")
+              : print("Permission not given")
+        },
       ),
     );
   }

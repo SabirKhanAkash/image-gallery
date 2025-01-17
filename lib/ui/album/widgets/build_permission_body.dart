@@ -6,9 +6,11 @@ import 'package:image_gallery/utils/config/app_image.dart';
 import 'package:image_gallery/utils/config/app_style.dart';
 import 'package:image_gallery/utils/config/app_text.dart';
 import 'package:image_gallery/utils/helpers/permission_helper.dart';
+import 'package:image_gallery/viewmodels/app/app_cubit.dart';
+import 'package:image_gallery/viewmodels/app/app_state.dart';
 import 'package:permission_handler/permission_handler.dart';
 
-Widget buildPermissionBody() {
+Widget buildPermissionBody(AppCubit cubit, BuildContext context, AppState state) {
   return Center(
     child: Padding(
       padding: const EdgeInsets.symmetric(horizontal: 40, vertical: 10),
@@ -39,8 +41,14 @@ Widget buildPermissionBody() {
             buttonLabel: AppText().permissionButton,
             backgroundColor: AppColor().lightGreen,
             foregroundColor: AppColor().solidBlack,
-            buttonClickAction: () => PermissionHelper.handlePermission(Permission.mediaLibrary),
-          )
+            buttonClickAction: () {
+              PermissionHelper.handlePermission(Permission.photos);
+              if (PermissionHelper.isPermissionGranted(Permission.photos) ==
+                  PermissionStatus.granted) {
+                cubit.permitGalleryAccess(true);
+              }
+            },
+          ),
         ],
       ),
     ),
