@@ -1,6 +1,7 @@
+import 'dart:io';
+
 import 'package:image_gallery/utils/config/env.dart';
 import 'package:logger/logger.dart';
-import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
 class Log {
