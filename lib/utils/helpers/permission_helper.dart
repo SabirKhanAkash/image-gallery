@@ -3,6 +3,7 @@ import 'package:permission_handler/permission_handler.dart';
 class PermissionHelper {
   static Future<void> handlePermission(Permission permission) async {
     PermissionStatus currentPermissionStatus = await checkPermissionStatus(permission);
+    print(currentPermissionStatus);
     if (!currentPermissionStatus.isGranted) {
       switch (currentPermissionStatus) {
         case PermissionStatus.permanentlyDenied:

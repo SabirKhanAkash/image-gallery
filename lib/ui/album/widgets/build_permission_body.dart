@@ -39,7 +39,7 @@ Widget buildPermissionBody() {
             buttonLabel: AppText().permissionButton,
             backgroundColor: AppColor().lightGreen,
             foregroundColor: AppColor().solidBlack,
-            buttonClickAction: () => PermissionHelper.handlePermission(Permission.photos),
+            buttonClickAction: () => PermissionHelper.handlePermission(Permission.mediaLibrary),
           )
         ],
       ),
