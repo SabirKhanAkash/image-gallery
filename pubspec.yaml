@@ -1,5 +1,6 @@
-name: flutter_mvvm_starter
-description: "An MVVM patterned starter for Flutter project."
+name: image_gallery
+description: "this is an image gallery app which is an assignment task from Cheq Lifestyle 
+Technology Inc."
 publish_to: 'none'
 version: 1.0.0+1
 
@@ -9,13 +10,15 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  cupertino_icons: ^1.0.6
+  dartz: ^0.10.0
+  flutter_bloc: ^8.1.6
   flutter_splash_screen: ^3.0.0
-  http: ^1.2.2
+  flutter_svg: ^2.0.16
   json_annotation: ^4.9.0
   logger: ^2.4.0
   path_provider: ^2.1.4
-  provider: ^6.1.2
-  cupertino_icons: ^1.0.6
+  permission_handler: ^11.3.1
 
 dev_dependencies:
   flutter_test:
@@ -32,7 +35,14 @@ flutter:
     - assets/others/
 
   fonts:
+    - family: roboto
+      fonts:
+        - asset: assets/fonts/roboto.ttf
+          style: normal
+
     - family: inter
       fonts:
         - asset: assets/fonts/inter.ttf
           style: normal
+
+

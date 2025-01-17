@@ -1,4 +1,4 @@
-package com.akash.flutter_mvvm_starter
+package com.akash.image_gallery
 
 import io.flutter.embedding.android.FlutterActivity
 

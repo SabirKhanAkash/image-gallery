@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_mvvm_starter/core/services/api_service.dart';
-import 'package:flutter_mvvm_starter/core/services/log_service.dart';
-import 'package:flutter_mvvm_starter/data/repositories/remote/auth_repository.dart';
-import 'package:flutter_mvvm_starter/data/state/auth_state.dart';
-import 'package:flutter_mvvm_starter/ui/auth/login_screen.dart';
-import 'package:flutter_mvvm_starter/viewmodels/auth_view_model.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_splash_screen/flutter_splash_screen.dart';
+import 'package:image_gallery/core/services/log_service.dart';
+import 'package:image_gallery/ui/album/screens/home_screen.dart';
+import 'package:image_gallery/utils/config/app_color.dart';
+import 'package:image_gallery/utils/config/app_style.dart';
+import 'package:image_gallery/utils/config/app_text.dart';
+import 'package:image_gallery/utils/config/env.dart';
+import 'package:image_gallery/viewmodels/app/app_cubit.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -37,24 +39,21 @@ class _MyAppState extends State<MyApp> {
 
   @override
   Widget build(BuildContext context) {
-    return MultiProvider(
+    return MultiBlocProvider(
       providers: [
-        ChangeNotifierProvider<AuthViewModel>(
-          create: (context) =>
-              AuthViewModel(authRepository: AuthRepository(apiService: ApiService())),
+        BlocProvider(
+          create: (_) => AppCubit(),
         ),
-        ChangeNotifierProvider<AuthState>(
-          create: (context) => AuthState(),
-        )
       ],
       child: MaterialApp(
-        title: 'Flutter MVVM Starter',
+        debugShowCheckedModeBanner: Env().envType == AppText().devEnv,
+        title: AppText().title,
         theme: ThemeData(
-          fontFamily: ('inter'),
-          colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+          fontFamily: AppStyle().primaryFont,
+          colorScheme: ColorScheme.fromSeed(seedColor: AppColor().primary),
           useMaterial3: true,
         ),
-        home: const LoginScreen(title: 'Flutter MVVM Starter'),
+        home: const HomeScreen(),
       ),
     );
   }
