@@ -32,14 +32,8 @@ class _HomeScreenState extends State<HomeScreen> {
       body: BlocConsumer<AppCubit, AppState>(
         builder: (context, state) {
           final cubit = context.read<AppCubit>();
-          // cubit.fetchGalleryAlbums();
-          // return (state is GalleryPermissionStatus)
-          //     ? state.galleryPermissionGranted
-          //         ? buildAlbumBody(cubit, context, state)
-          //         : buildPermissionBody(cubit, context, state)
-          //     : buildPermissionBody(cubit, context, state);
           return (state is FetchGalleryAlbumsStatus)
-              ? ((state.albums?.length) ?? 0) > 0
+              ? state.albums.isNotEmpty
                   ? buildAlbumBody(cubit, context, state)
                   : buildPermissionBody(cubit, context, state)
               : buildPermissionBody(cubit, context, state);

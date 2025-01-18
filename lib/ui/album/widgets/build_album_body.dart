@@ -36,111 +36,165 @@ Widget buildAlbumBody(AppCubit cubit, BuildContext context, FetchGalleryAlbumsSt
               mainAxisSpacing: 10,
               childAspectRatio: 1,
             ),
-            itemCount: state.albums?.length ?? 0,
+            itemCount: state.albums.length,
             padding: const EdgeInsets.symmetric(vertical: 10, horizontal: 12),
             itemBuilder: (context, index) {
-              var album = state.albums?[index];
+              var album = state.albums[index];
 
               if (album == null) {
                 return Container();
               }
 
-              var albumName = album.albumName.toString();
-              var images = album.images.toString();
+              var albumName = album['albumName'];
+              var images = album['images'];
 
               if (images.isEmpty) {
                 return Container();
               }
 
-              return Container(
-                decoration: BoxDecoration(
-                  color: Colors.red,
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                alignment: Alignment.center,
-                child: Stack(
-                  children: [
-                    index == 0
-                        ? Image.file(
-                            // File(album.images?[0] ?? ""),
-                            File("content://media/external/images/media/1000123237"),
-                            fit: BoxFit.cover,
-                          )
-                        : index == 1
-                            ? Image.asset(
-                                AppImage().recentAlbumThumbnail,
-                                scale: 0.5,
-                              )
-                            : index == 2
-                                ? Image.asset(
-                                    AppImage().gameAlbumThumbnail,
-                                    scale: 0.5,
-                                  )
-                                : index == 3
-                                    ? Image.asset(
-                                        AppImage().buildingAlbumThumbnail,
-                                        scale: 0.5,
-                                      )
-                                    : Image.asset(
-                                        AppImage().peopleAlbumThumbnail,
-                                        scale: 0.5,
-                                      ),
-                    SvgPicture.asset(
-                      AppImage().grayTransparentCover,
-                      height: 350,
-                      width: 350,
+              String contentUri = images[0];
+
+              return FutureBuilder<File?>(
+                future: resolveContentUriToFile(contentUri),
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(child: CircularProgressIndicator());
+                  } else if (snapshot.hasError || snapshot.data == null) {
+                    return _buildImageError(albumName, images.length);
+                  }
+
+                  File imageFile = snapshot.data!;
+                  return Container(
+                    decoration: BoxDecoration(
+                      color: AppColor().lightGreen,
+                      borderRadius: BorderRadius.circular(10),
                     ),
-                    Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      verticalDirection: VerticalDirection.up,
+                    alignment: Alignment.center,
+                    child: Stack(
                       children: [
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10, bottom: 10),
-                          child: Text(
-                            index == 0
-                                ? albumName
-                                : index == 1
-                                    ? "${album.images?.length}"
-                                    : index == 2
-                                        ? AppText().gameAlbumSubHeading
-                                        : index == 3
-                                            ? AppText().buildingAlbumSubHeading
-                                            : index == 4
-                                                ? AppText().peopleAlbumSubHeading
-                                                : AppText().allAlbumSubHeading,
-                            style: TextStyle(
-                              color: AppColor().veryGrayBlack,
-                              fontSize: AppStyle().smallDp,
-                            ),
-                          ),
+                        Image.file(
+                          imageFile,
+                          fit: BoxFit.cover,
+                          width: double.infinity,
+                          height: double.infinity,
+                          errorBuilder: (context, error, stackTrace) {
+                            return const Icon(
+                              Icons.image_not_supported,
+                              color: Colors.white,
+                              size: 45,
+                            );
+                          },
                         ),
-                        Padding(
-                          padding: const EdgeInsets.only(left: 10, top: 10),
-                          child: Text(
-                            index == 0
-                                ? albumName
-                                : index == 1
-                                    ? AppText().recentAlbumHeading
-                                    : index == 2
-                                        ? AppText().gameAlbumHeading
-                                        : index == 3
-                                            ? AppText().buildingAlbumHeading
-                                            : index == 4
-                                                ? AppText().peopleAlbumHeading
-                                                : AppText().allAlbumHeading,
-                            style: TextStyle(
-                              color: AppColor().white,
-                              fontSize: AppStyle().lessLargeDp,
+                        SvgPicture.asset(
+                          AppImage().grayTransparentCover,
+                          height: 350,
+                          width: 350,
+                        ),
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          verticalDirection: VerticalDirection.up,
+                          children: [
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10, bottom: 10),
+                              child: Text(
+                                "${images.length} Photos",
+                                style: TextStyle(
+                                  color: AppColor().veryGrayBlack,
+                                  fontSize: AppStyle().smallDp,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                maxLines: 1,
+                              ),
                             ),
-                          ),
+                            Padding(
+                              padding: const EdgeInsets.only(left: 10, top: 10),
+                              child: Text(
+                                albumName,
+                                style: TextStyle(
+                                  color: AppColor().white,
+                                  fontSize: AppStyle().lessLargeDp,
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                                maxLines: 1,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
-                    )
-                  ],
-                ),
+                    ),
+                  );
+                },
               );
             },
           ),
+        ),
+      ],
+    ),
+  );
+}
+
+Future<File?> resolveContentUriToFile(String contentUri) async {
+  try {
+    File file = File(contentUri);
+    if (await file.exists()) {
+      return file;
+    }
+  } catch (e) {
+    debugPrint("Error resolving URI to file: $e");
+  }
+  return null;
+}
+
+Widget _buildImageError(String albumName, int imageCount) {
+  return Container(
+    decoration: BoxDecoration(
+      color: AppColor().lightGreen,
+      borderRadius: BorderRadius.circular(10),
+    ),
+    alignment: Alignment.center,
+    child: Stack(
+      children: [
+        const Center(
+          child: Icon(
+            Icons.image_not_supported,
+            color: Colors.white,
+            size: 45,
+          ),
+        ),
+        SvgPicture.asset(
+          AppImage().grayTransparentCover,
+          height: 350,
+          width: 350,
+        ),
+        Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          verticalDirection: VerticalDirection.up,
+          children: [
+            Padding(
+              padding: const EdgeInsets.only(left: 10, bottom: 10),
+              child: Text(
+                "$imageCount Photos",
+                style: TextStyle(
+                  color: AppColor().veryGrayBlack,
+                  fontSize: AppStyle().smallDp,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                maxLines: 1,
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.only(left: 10, top: 10),
+              child: Text(
+                albumName,
+                style: TextStyle(
+                  color: AppColor().white,
+                  fontSize: AppStyle().lessLargeDp,
+                  overflow: TextOverflow.ellipsis,
+                ),
+                maxLines: 1,
+              ),
+            ),
+          ],
         ),
       ],
     ),

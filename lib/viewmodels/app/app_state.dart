@@ -15,7 +15,7 @@ class FetchGalleryImageStatus extends AppState {
 }
 
 class FetchGalleryAlbumsStatus extends AppState {
-  final List<dynamic?> albums;
+  final List<dynamic> albums;
 
   FetchGalleryAlbumsStatus(this.albums);
 }
