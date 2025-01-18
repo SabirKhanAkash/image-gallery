@@ -1,5 +1,3 @@
-import 'package:image_gallery/data/models/data_model/data.dart';
-
 abstract class AppState {}
 
 class AppInitial extends AppState {}

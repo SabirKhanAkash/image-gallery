@@ -17,18 +17,23 @@ class MainActivity : FlutterActivity() {
     override fun configureFlutterEngine(flutterEngine: FlutterEngine) {
         super.configureFlutterEngine(flutterEngine)
 
-        MethodChannel(flutterEngine.dartExecutor.binaryMessenger, CHANNEL).setMethodCallHandler { call, result ->
+        MethodChannel(
+            flutterEngine.dartExecutor.binaryMessenger,
+            CHANNEL
+        ).setMethodCallHandler { call, result ->
             when (call.method) {
                 "getAllImages" -> {
                     val imagePaths = getAllImages()
                     Log.d("debug", "Image URIs: $imagePaths")
                     result.success(imagePaths)
                 }
+
                 "getAlbums" -> {
                     val albums = getAlbums()
                     Log.d("debug", "Albums: $albums")
                     result.success(albums)
                 }
+
                 else -> {
                     Log.d("debug", "Method not implemented")
                     result.notImplemented()
@@ -53,7 +58,10 @@ class MainActivity : FlutterActivity() {
             val columnIndexId = it.getColumnIndexOrThrow(MediaStore.Images.Media._ID)
             while (it.moveToNext()) {
                 val id = it.getLong(columnIndexId)
-                val contentUri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id.toString())
+                val contentUri = Uri.withAppendedPath(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    id.toString()
+                )
                 images.add(contentUri.toString())
             }
         }
@@ -83,7 +91,10 @@ class MainActivity : FlutterActivity() {
             while (it.moveToNext()) {
                 val bucketName = it.getString(bucketColumn) ?: "Unknown"
                 val id = it.getLong(idColumn)
-                val contentUri = Uri.withAppendedPath(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, id.toString())
+                val contentUri = Uri.withAppendedPath(
+                    MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
+                    id.toString()
+                )
 
                 albumMap.computeIfAbsent(bucketName) { mutableListOf() }.add(contentUri.toString())
             }
