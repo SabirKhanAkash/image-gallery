@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:image_gallery/core/services/log_service.dart';
 import 'package:image_gallery/ui/shared/components/custom_elevated_button_one.dart';
 import 'package:image_gallery/utils/config/app_color.dart';
 import 'package:image_gallery/utils/config/app_image.dart';
@@ -8,6 +9,7 @@ import 'package:image_gallery/utils/config/app_text.dart';
 import 'package:image_gallery/utils/helpers/permission_helper.dart';
 import 'package:image_gallery/viewmodels/app/app_cubit.dart';
 import 'package:image_gallery/viewmodels/app/app_state.dart';
+import 'package:logger/logger.dart';
 import 'package:permission_handler/permission_handler.dart';
 
 Widget buildPermissionBody(AppCubit cubit, BuildContext context, AppState state) {
@@ -41,11 +43,16 @@ Widget buildPermissionBody(AppCubit cubit, BuildContext context, AppState state)
             buttonLabel: AppText().permissionButton,
             backgroundColor: AppColor().lightGreen,
             foregroundColor: AppColor().solidBlack,
-            buttonClickAction: () {
-              PermissionHelper.handlePermission(Permission.photos);
-              if (PermissionHelper.isPermissionGranted(Permission.photos) ==
-                  PermissionStatus.granted) {
-                cubit.permitGalleryAccess(true);
+            buttonClickAction: () async {
+              await PermissionHelper.handlePermission(Permission.manageExternalStorage);
+              Log.create(
+                  Level.info,
+                  "PermissionHelper.isPermissionGranted(Permission.manageExternalStorage)"
+                  ": ${await PermissionHelper.isPermissionGranted(Permission.manageExternalStorage)}");
+              if (await PermissionHelper.isPermissionGranted(Permission.manageExternalStorage) ==
+                  true) {
+                await cubit.permitGalleryAccess(true);
+                await cubit.fetchGalleryAlbums();
               }
             },
           ),

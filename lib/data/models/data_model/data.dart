@@ -4,24 +4,12 @@ part 'data.g.dart';
 
 @JsonSerializable()
 class Data {
-  int? id;
-  String? username;
-  String? email;
-  String? firstName;
-  String? lastName;
-  String? gender;
-  String? image;
-  String? message;
+  String? albumName;
+  List<String>? images;
 
   Data({
-    this.id,
-    this.username,
-    this.email,
-    this.firstName,
-    this.lastName,
-    this.gender,
-    this.image,
-    this.message,
+    this.albumName,
+    this.images,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => _$DataFromJson(json);
