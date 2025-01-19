@@ -51,8 +51,7 @@ class PermissionHelper {
     return status.isGranted;
   }
 
-  static Future<Map<Permission, PermissionStatus>> requestPermissions(
-      List<Permission> permissions) async {
+  static Future<Map<Permission, PermissionStatus>> requestPermissions(List<Permission> permissions) async {
     final Map<Permission, PermissionStatus> statuses = await permissions.request();
 
     return statuses;

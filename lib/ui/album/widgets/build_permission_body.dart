@@ -49,8 +49,7 @@ Widget buildPermissionBody(AppCubit cubit, BuildContext context, AppState state)
                   Level.info,
                   "PermissionHelper.isPermissionGranted(Permission.manageExternalStorage)"
                   ": ${await PermissionHelper.isPermissionGranted(Permission.manageExternalStorage)}");
-              if (await PermissionHelper.isPermissionGranted(Permission.manageExternalStorage) ==
-                  true) {
+              if (await PermissionHelper.isPermissionGranted(Permission.manageExternalStorage) == true) {
                 await cubit.permitGalleryAccess(true);
                 await cubit.fetchGalleryAlbums();
               }

@@ -8,6 +8,7 @@ import 'package:image_gallery/utils/config/app_style.dart';
 import 'package:image_gallery/utils/config/app_text.dart';
 import 'package:image_gallery/utils/config/env.dart';
 import 'package:image_gallery/viewmodels/app/app_cubit.dart';
+import 'package:logger/logger.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
@@ -32,8 +33,12 @@ class _MyAppState extends State<MyApp> {
   }
 
   Future<void> hideScreen() async {
-    Future.delayed(const Duration(milliseconds: 500), () {
-      FlutterSplashScreen.hide();
+    Future.delayed(const Duration(milliseconds: 500), () async {
+      try {
+        await FlutterSplashScreen.hide();
+      } catch (e) {
+        Log.create(Level.info, "Error hiding splash screen: $e");
+      }
     });
   }
 

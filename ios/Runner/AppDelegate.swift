@@ -2,7 +2,7 @@ import UIKit
 import Flutter
 import Photos
 
-@UIApplicationMain
+@main
 @objc class AppDelegate: FlutterAppDelegate {
     private let CHANNEL = "com.akash.image_gallery/images"
 
@@ -30,8 +30,8 @@ import Photos
     private func getAllImages(result: @escaping FlutterResult) {
         var imagePaths = [String]()
 
-        PHPhotoLibrary.requestAuthorization { status in
-            if status == .authorized {
+        PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
+            if status == .authorized || status == .limited {
                 let assets = PHAsset.fetchAssets(with: .image, options: nil)
 
                 assets.enumerateObjects { (asset, index, stop) in
@@ -48,8 +48,8 @@ import Photos
     private func getAlbums(result: @escaping FlutterResult) {
         var albums = [[String: Any]]()
 
-        PHPhotoLibrary.requestAuthorization { status in
-            if status == .authorized {
+        PHPhotoLibrary.requestAuthorization(for: .readWrite) { status in
+            if status == .authorized || status == .limited {
                 let collections = PHAssetCollection.fetchAssetCollections(with: .album, subtype: .any, options: nil)
 
                 collections.enumerateObjects { (collection, index, stop) in
